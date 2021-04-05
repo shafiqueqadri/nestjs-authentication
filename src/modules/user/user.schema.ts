@@ -24,9 +24,6 @@ export interface IUserDocument extends Document {
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date;
-
-    // Actions
-    addTribe(id: string);
 }
 
 const UserSchema = new mongoose.Schema({
@@ -107,14 +104,9 @@ const UserSchema = new mongoose.Schema({
 //     return next();
 // })
 UserSchema.methods.toJSON = function() {
-    var obj = this.toObject();
+    var obj: any = this.toObject();
     delete obj.password;
     return obj;
-}
-
-UserSchema.methods.addTribe = function (id: string) {
-    this.tribes.push(id);
-    this.save();
 }
 
 export interface IForgetPasswordDocument extends Document {
