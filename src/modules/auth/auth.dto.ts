@@ -14,15 +14,11 @@ export class SignupDto {
     email: string;
 
     @IsNotEmpty()
-    postalCode: string;
-
-    @IsNotEmpty()
     password: string;
 
     @IsNotEmpty()
     confirmPassword: string
 
-    interests: any;
     country: any;
     city: string;
 
