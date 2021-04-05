@@ -1,6 +1,4 @@
 import * as mongoose from 'mongoose';
-import * as bcrypt from "bcrypt";
-import { INTERESTS, jwtConstants, TRIBES } from 'src/constants';
 import { Document } from 'mongoose'
 
 export interface IUserDocument extends Document {
@@ -11,14 +9,10 @@ export interface IUserDocument extends Document {
     phone : string;
     password : string;
     avatar ?: string;
-    cover ?: string;
     city ?: string;
     country ?: string;
     roles :Array<string>;
-    postalCode: string;
     about: string;
-    preferences: Array<string>;
-    interests: Array<string>;
     isActive ?: boolean;
     emailVerified ?: boolean;
     createdAt: Date;
@@ -46,9 +40,6 @@ const UserSchema = new mongoose.Schema({
     avatar: {
         type: String,
     },
-    cover: {
-        type: String,
-    },
     displayName: {
         type: String,
         required: true
@@ -58,9 +49,6 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
     city: {
-        type: String,
-    },
-    postalCode: {
         type: String,
     },
     country: {
@@ -73,9 +61,6 @@ const UserSchema = new mongoose.Schema({
     roles: [{
         type: String
     }],
-    preferences: [{
-        type: String
-    }],
     isActive: {
         type: Boolean,
         default: true
@@ -84,18 +69,6 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-    interests: [
-        { 
-          type: mongoose.Types.ObjectId,
-          ref: INTERESTS
-        }
-    ],
-    tribes: [
-        { 
-          type: mongoose.Types.ObjectId,
-          ref: TRIBES
-        }
-    ],
     deletedAt: Date
 }, { timestamps: true });
 
