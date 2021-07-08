@@ -3,13 +3,12 @@ import { Model } from 'mongoose';
 import { MailerService } from "@nestjs-modules/mailer";
 import { USER_REPOSITORY } from 'src/constants';
 import { IUserDocument } from './user.schema';
-import { BaseService } from '../shared/base.service';
+import { BaseService } from 'src/shared/services/base.service';
 
 @Injectable()
 export class UserService extends BaseService {
   constructor(
-    @Inject(USER_REPOSITORY)
-    private readonly userRepository: Model<IUserDocument>,
+    @Inject(USER_REPOSITORY) private readonly userRepository: Model<IUserDocument>,
     private readonly mailerService: MailerService
   ){
     super(userRepository);
@@ -41,10 +40,6 @@ export class UserService extends BaseService {
     return this.userRepository.findOne({email: email});
   }
 
-  // async byId(id: string): Promise<IUserDocument | undefined> {
-  //   return this.userRepository.findById(id);
-  // }
-
   async findByUsername(username: string): Promise<IUserDocument | undefined> {
     return this.userRepository.findOne({username: username});
   }
@@ -56,7 +51,7 @@ export class UserService extends BaseService {
   async updatePassword(body: any){
     await this.userRepository.updateOne(
       { email: body.email },
-      { password: body.password, emailVerified: true }
+      { password: body.password }
     );
   }
 }

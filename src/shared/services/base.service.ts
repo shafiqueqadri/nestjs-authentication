@@ -2,7 +2,6 @@ import { HttpCode, Injectable, Logger } from '@nestjs/common';
 import { Response } from 'express';
 import { STATUS_CODES } from 'http';
 import { Model } from 'mongoose';
-import { IUserDocument } from '../user/user.schema';
 
 export class BaseService {
 
@@ -21,6 +20,18 @@ export class BaseService {
     all = (condition?: {}) => this.repository.find(condition);
 
     /**
+     * Find One
+     * @returns Object
+     */
+    one = (condition = {}) => this.repository.findOne(condition);
+
+    /**
+     * Delete many
+     * @returns Object
+     */
+    deleteMany = (condition = {}) => this.repository.deleteMany(condition);
+
+    /**
      * Find By ID
      * @param id Object ID
      * @returns Object
@@ -34,6 +45,14 @@ export class BaseService {
      * @returns New Object ID
      */
     findByIdAndUpdate = async <T>(id: string, data: any): Promise<T> => await this.repository.findByIdAndUpdate(id, data, { new: true });
+    
+    /**
+     * Update Object
+     * @param id Object ID
+     * @param data Queries to update
+     * @returns New Object ID
+     */
+    findOneAndUpdate = async <T>(condition: any, data: any): Promise<T> => await this.repository.findOneAndUpdate(condition, data);
 
     //------------------------------ Responses -------------------------- //
 

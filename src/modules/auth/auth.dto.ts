@@ -3,12 +3,9 @@ import { IsNotEmpty } from "class-validator";
 export class SignupDto {
     @IsNotEmpty()
     firstName: string;
-
+    
     @IsNotEmpty()
     lastName: string;
-
-    @IsNotEmpty()
-    displayName: string;
 
     @IsNotEmpty()
     email: string;
@@ -17,19 +14,8 @@ export class SignupDto {
     password: string;
 
     @IsNotEmpty()
-    confirmPassword: string
+    confirmPassword: string;
 
-    country: any;
-    city: string;
-
-    preferences: any
-}
-
-export class SigninDto {
-    
-    @IsNotEmpty()
-    identifier: string;
-
-    @IsNotEmpty()
-    password: string;
+    role: string
+    username: string
 }

@@ -1,20 +1,18 @@
 import * as mongoose from 'mongoose';
+
 import { Document } from 'mongoose'
 
 export interface IUserDocument extends Document {
     firstName : string;
     lastName : string;
-    displayName : string;
     email : string;
-    phone : string;
     password : string;
     avatar ?: string;
     city ?: string;
+    state ?: string;
     country ?: string;
-    roles :Array<string>;
-    about: string;
+    roles :Array<string>; 
     isActive ?: boolean;
-    emailVerified ?: boolean;
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date;
@@ -34,15 +32,8 @@ const UserSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    phone: {
-        type: String
-    },
     avatar: {
         type: String,
-    },
-    displayName: {
-        type: String,
-        required: true
     },
     password: {
         type: String,
@@ -51,46 +42,41 @@ const UserSchema = new mongoose.Schema({
     city: {
         type: String,
     },
+    state: {
+        type: String,
+    },
     country: {
         type: String,
     },
-    about: {
-        type: String,
-        default: ''
-    },
     roles: [{
-        type: String
+        type: String,
+        required: true
     }],
     isActive: {
         type: Boolean,
         default: true
     },
-    emailVerified: {
-        type: Boolean,
-        default: true
-    },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
     deletedAt: Date
-}, { timestamps: true });
+});
 
-// UserSchema.pre('save', (next: any, done: any) => {
-//     this.password = bcrypt.hashSync(signupDto.password, jwtConstants.salt)
-//     return next();
-// })
 UserSchema.methods.toJSON = function() {
-    var obj: any = this.toObject();
+    var obj = this.toObject();
     delete obj.password;
     return obj;
 }
 
+
 export interface IForgetPasswordDocument extends Document {
-    code: string;
+    pin: number;
     email: string;
     readonly createdAt: Date;
   }
   
 const ForgetPasswordSchema = new mongoose.Schema({
     email: String,
-    code: String,
+    pin: Number,
     createdAt: { type: Date, default: Date.now }
 });
 

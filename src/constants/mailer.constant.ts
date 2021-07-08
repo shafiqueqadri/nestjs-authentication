@@ -1,4 +1,4 @@
 export const mailerConstants = {
-    user: "25e5cdc83e64df",
-    password: "cfece9c7b6810a"
+    user: "3a0b7255393417",
+    password: "85b494d1346159"
 };

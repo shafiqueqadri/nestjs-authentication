@@ -7,7 +7,7 @@ import { FORGET_PASSWORD_REPOSITORY, jwtConstants } from 'src/constants';
 import { Model } from 'mongoose';
 import { IForgetPasswordDocument } from '../user/user.schema';
 import { env } from 'process';
-import { v4 } from 'uuid'
+
 
 @Injectable()
 export class AuthService {
@@ -28,6 +28,7 @@ export class AuthService {
 
     async login(user: any) {
         const payload = { email: user.email, sub: user._id };
+        console.log(user);
         return {
           access_token: this.jwtService.sign(payload),
           user 
@@ -35,31 +36,31 @@ export class AuthService {
     }
 
     async forgetPassword(email: any) {
-      const code = v4()
+      const random = Math.floor(Math.random() * 1000 + 10300);
   
       const check = await this.passwordRepository.findOne({ email: email });
       if (check) {
        await this.passwordRepository.updateOne(
           { email: email },
-          { code, createdAt: new Date()}
+          { pin: random , createdAt: new Date()}
         );
       } else {
         await this.passwordRepository.create({
           email: email,
-          code
+          pin: random
         });
       }
       this.userService.sendEmail(
         email,
-        `Here is your link to reset password <a href="${env.FRONTEND_BASE_URL}/reset-password/${email}/${code}">Click here</a>.`
+        `Here is your verification code to reset password <a href="${env.FRONTEND_BASE_URL}/reset-password/${email}/${random}">Click here</a> reset your password`
       );
-      return { status: "success", message: "Email with reset link is sent to user email" };
+      return { status: "success", message: "verification code sent to user email" };
     }
 
-    async checkCode(email, code) {
-      const verify = await this.passwordRepository.findOne({ email: email, code, createdAt:{$gt: new Date(Date.now() - 4*60*60 * 1000)}});
+    async checkPin(email, pin) {
+      const verify = await this.passwordRepository.findOne({ email: email, pin: pin, createdAt:{$gt: new Date(Date.now() - 4*60*60 * 1000)}});
       if (verify) {
-        return { status: "success", message: "Link is Verified" };
+        return { status: "success", message: "Pin Code Verified" };
       } else {
         return { status: "error", message: "Link Expired" };
       }
